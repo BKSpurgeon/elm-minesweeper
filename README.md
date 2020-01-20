@@ -26,3 +26,21 @@ $ open http://localhost:8000/src/Main.elm
 ```shell
 $ npm run format
 ```
+
+### Trouble shooting?
+
+**The images are not showing up?**
+
+```shell
+npm run static
+```
+That should copy the images etc. over.
+
+**Debugger not showing?**
+
+To get the elm debugger showing, try this:
+
+```shell
+$ npm run build -- --debug
+```
+It will build a JS file that includes dev tools. then, open dist/index.html.
