@@ -8,6 +8,12 @@ https://brandly.github.io/elm-minesweeper/
 
 # elm-minesweeper
 
+[Play it here!](https://brandly.github.io/elm-minesweeper/)
+
+![screenshot](src/images/screenshot.png?raw=true)
+
+### development
+
 Set up.
 
 ```shell
