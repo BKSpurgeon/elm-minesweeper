@@ -14,6 +14,9 @@ import Random
 import Time
 
 
+-- To do:
+-- Add draggable window
+
 main : Program () Model Msg
 main =
     Browser.element
