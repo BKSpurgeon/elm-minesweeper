@@ -7,7 +7,7 @@ import Element exposing (Element, px, styled)
 import GameMode exposing (GameMode(..))
 import Grid exposing (Cell, CellState(..), Grid)
 import Html exposing (Html, button, div, input, label, p, text)
-import Html.Attributes exposing (checked, disabled, name, style, type_, value)
+import Html.Attributes exposing (checked, disabled, name, style, type_, value, class)
 import Html.Events exposing (custom, onClick, onInput, onMouseDown, onMouseEnter, onMouseLeave, onMouseOut, onMouseUp)
 import Json.Decode as Json
 import Random
@@ -685,20 +685,60 @@ viewModal (DifficultyMenu difficulty fields) =
                     , radiobutton "Expert" (difficulty == Expert) Expert
                     , radiobutton "Custom" (isCustom difficulty) (Custom fields)
                     , viewCustomFields (isCustom difficulty) fields
-                    ]
+                    ]        
     in
-    div maskStyle
-        [ modalContent []
-            [ windowsChrome [ style "padding" "0 18px 90px" ]
-                [ formGroup "Difficulty"
-                    [ menuContent
-                    , button [ onClick (CloseMenu (Just difficulty)) ] [ text "OK" ]
-                    , button [ onClick (CloseMenu Nothing) ] [ text "Cancel" ]
-                    ]
+    div [class "window", style "margin" "32px", style "width" "250px"]
+        [ div [ class "title-bar"] 
+              [ div [class "title-bar-text"] 
+                    [ p [][text "Set your Difficulty"]                    ]
+              ]
+        , div [ class "window-body"]
+              [ formGroup "Difficulty"
+                [ menuContent
+                , button [ onClick (CloseMenu (Just difficulty)) ] [ text "OK" ]
+                , button [ onClick (CloseMenu Nothing) ] [ text "Cancel" ]
                 ]
-            ]
+                                
+                             
+              ]           
         ]
 
+
+
+
+maskStyle : List (Html.Attribute msg)
+maskStyle =
+    [ style "background-color" "rgba(0,0,0,0.3)"
+    , style "position" "fixed"
+    , style "top" "0"
+    , style "left" "0"
+    , style "width" "100%"
+    , style "height" "100%"
+    ]
+
+
+modalContent : Element msg
+modalContent =
+    styled div
+        [ ( "position", "absolute" )
+        , ( "top", "50%" )
+        , ( "left", "50%" )
+        , ( "height", "auto" )
+        , ( "max-height", "80%" )
+        , ( "width", "400px" )
+        , ( "max-width", "95%" )
+        , ( "padding", "10px" )
+        , ( "border-radius", "3px" )
+        , ( "transform", "translate(-50%, -50%)" )
+        ]
+
+
+windowsChrome : Element msg
+windowsChrome =
+    styled div
+        [ ( "border", "3px solid #135ddf" )
+        , ( "background", "#ece9d8" )
+        ]
 
 radiobutton : String -> Bool -> Difficulty -> Html MenuMsg
 radiobutton settingLabel isSelected difficulty =
@@ -760,37 +800,3 @@ formGroup title children =
     div []
         (p [] [ text title ] :: children)
 
-
-maskStyle : List (Html.Attribute msg)
-maskStyle =
-    [ style "background-color" "rgba(0,0,0,0.3)"
-    , style "position" "fixed"
-    , style "top" "0"
-    , style "left" "0"
-    , style "width" "100%"
-    , style "height" "100%"
-    ]
-
-
-modalContent : Element msg
-modalContent =
-    styled div
-        [ ( "position", "absolute" )
-        , ( "top", "50%" )
-        , ( "left", "50%" )
-        , ( "height", "auto" )
-        , ( "max-height", "80%" )
-        , ( "width", "400px" )
-        , ( "max-width", "95%" )
-        , ( "padding", "10px" )
-        , ( "border-radius", "3px" )
-        , ( "transform", "translate(-50%, -50%)" )
-        ]
-
-
-windowsChrome : Element msg
-windowsChrome =
-    styled div
-        [ ( "border", "3px solid #135ddf" )
-        , ( "background", "#ece9d8" )
-        ]
