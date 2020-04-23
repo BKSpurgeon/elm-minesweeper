@@ -687,7 +687,7 @@ viewModal (DifficultyMenu difficulty fields) =
                     , viewCustomFields (isCustom difficulty) fields
                     ]        
     in
-    div [class "window", style "margin" "32px", style "width" "250px"]
+    div [class "window", style "margin" "32px", style "width" "250px", style "position" "absolute", style "bottom" "0", style "right" "0" ]
         [ div [ class "title-bar"] 
               [ div [class "title-bar-text"] 
                     [ p [][text "Set your Difficulty"]                    ]
@@ -697,11 +697,15 @@ viewModal (DifficultyMenu difficulty fields) =
                 [ menuContent
                 , button [ onClick (CloseMenu (Just difficulty)) ] [ text "OK" ]
                 , button [ onClick (CloseMenu Nothing) ] [ text "Cancel" ]
-                ]
-                                
-                             
+                ]            
               ]           
         ]
+
+
+formGroup : String -> List (Html msg) -> Html msg
+formGroup title children =
+    div []
+        (p [] [ text title ] :: children)
 
 
 
@@ -742,17 +746,33 @@ windowsChrome =
 
 radiobutton : String -> Bool -> Difficulty -> Html MenuMsg
 radiobutton settingLabel isSelected difficulty =
-    label [ style "display" "flex", style "align-items" "center" ]
-        [ input
-            [ type_ "radio"
-            , name "value"
-            , onClick (SetDifficulty difficulty)
-            , checked isSelected
-            , style "margin" "4px 8px"
+      label [ style "display" "flex", style "align-items" "center" ]
+            [ input
+                [ type_ "radio"
+                , name "value"
+                , onClick (SetDifficulty difficulty)
+                , checked isSelected
+                , style "margin" "4px 8px"
+                ]
+                []
+            , text settingLabel
             ]
-            []
-        , text settingLabel
-        ]
+
+radiobutton : String -> Bool -> Difficulty -> Html MenuMsg
+radiobutton settingLabel isSelected difficulty =
+      div [ class "field-row" ]
+          [ input
+                [ type_ "radio"
+                , name "value"
+                , onClick (SetDifficulty difficulty)
+                , checked isSelected
+                , style "margin" "4px 8px"
+                ]
+                []
+            , label [] [text settingLabel]
+          ]
+
+
 
 
 viewCustomFields : Bool -> GridProperties -> Html MenuMsg
@@ -793,10 +813,4 @@ viewCustomFields enabled ({ width, height, bombs } as fields) =
                 SetDifficulty (Custom { fields | bombs = clampBombs num })
             )
         ]
-
-
-formGroup : String -> List (Html msg) -> Html msg
-formGroup title children =
-    div []
-        (p [] [ text title ] :: children)
 
